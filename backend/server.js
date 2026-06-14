@@ -7,24 +7,19 @@ const uploadRoutes = require("./routes/uploadRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 
-const cors = require('cors');
+const app = express();
 
+/*
+========================
+MIDDLEWARE
+========================
+*/
 app.use(cors({
   origin: ['https://studyai-richmond.netlify.app', 'http://localhost:5500', 'http://127.0.0.1:5500'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
-const app = express();
-
-/*
-========================
-MIDDLEWARE (IMPORTANT)
-========================
-*/
-
-
-// THIS IS WHAT YOU WERE MISSING OR NOT RELIABLE
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -49,7 +44,7 @@ app.get("/test", (req, res) => {
 
 /*
 ========================
-404 HANDLER (SAFE)
+404 HANDLER
 ========================
 */
 app.use((req, res) => {
