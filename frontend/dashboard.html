@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard — StudyAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--surf:#0d1117;--card:#111827;--card2:#161f2e;
+  --border:#1e2d40;--border2:#253347;
+  --blue:#3b82f6;--blue-dk:#2563eb;--blue-glo:rgba(59,130,246,0.12);
+  --violet:#8b5cf6;--cyan:#06b6d4;--emerald:#10b981;
+  --amber:#f59e0b;--danger:#ef4444;--danger-lo:rgba(239,68,68,0.1);
+  --text:#f1f5f9;--sub:#94a3b8;--muted:#475569;
+}
+*{-webkit-font-smoothing:antialiased}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex;flex-direction:column}
+
+/* ── TOPBAR ── */
+.topbar{
+  height:58px;min-height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+  background:var(--surf);border-bottom:1px solid var(--border);
+  z-index:10;flex-shrink:0;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  box-shadow:0 0 16px rgba(139,92,246,0.3);
+}
+.brand-name{font-family:'Sora',sans-serif;font-size:1rem;font-weight:800}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.user-chip{
+  display:flex;align-items:center;gap-8px;
+  font-size:0.8rem;color:var(--sub);
+  background:var(--card);border:1px solid var(--border);
+  padding:6px 12px;border-radius:999px;gap:7px;
+}
+.user-avatar{
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#fff;
+}
+.logout-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:9px;
+  background:transparent;border:1px solid var(--border2);
+  color:var(--muted);font-family:'Inter',sans-serif;
+  font-size:0.78rem;font-weight:500;cursor:pointer;
+  transition:all 0.15s;
+}
+.logout-btn:hover{border-color:rgba(239,68,68,0.4);color:var(--danger);background:var(--danger-lo)}
+
+/* ── LAYOUT ── */
+.shell{display:flex;flex:1;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:272px;min-width:272px;
+  background:var(--surf);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;padding:20px 16px;gap:24px;
+  overflow-y:auto;
+}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.sec-label{
+  font-size:0.67rem;font-weight:700;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0 2px;
+}
+
+/* Drop zone */
+.drop-zone{
+  border:2px dashed var(--border2);border-radius:16px;
+  padding:22px 14px;text-align:center;cursor:pointer;
+  position:relative;transition:all 0.2s;background:var(--card);
+}
+.drop-zone:hover,.drop-zone.over{border-color:var(--blue);background:var(--blue-glo)}
+.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{font-size:1.6rem;margin-bottom:8px;display:block}
+.drop-hint{font-size:0.76rem;color:var(--sub);line-height:1.5}
+.drop-hint strong{color:var(--blue)}
+
+/* Selected file tag */
+.file-tag{
+  margin-top:10px;padding:9px 11px;
+  background:var(--card2);border:1px solid var(--border);border-radius:10px;
+  display:none;align-items:center;gap:8px;
+}
+.file-tag.show{display:flex}
+.file-tag-name{flex:1;font-size:0.76rem;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-tag-del{
+  width:20px;height:20px;border-radius:5px;border:none;
+  background:var(--danger-lo);color:var(--danger);
+  cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background 0.15s;
+}
+.file-tag-del:hover{background:rgba(239,68,68,0.2)}
+
+.upload-btn{
+  width:100%;margin-top:10px;padding:11px;border-radius:11px;border:none;
+  background:linear-gradient(135deg,var(--blue),var(--blue-dk));
+  color:#fff;font-family:'Inter',sans-serif;
+  font-size:0.83rem;font-weight:600;cursor:pointer;
+  box-shadow:0 4px 14px rgba(59,130,246,0.28);
+  transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.upload-btn:hover{opacity:0.88;transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,0.38)}
+.upload-btn:active{transform:scale(0.97)}
+.upload-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Files list */
+.files-list{display:flex;flex-direction:column;gap:5px}
+.file-item{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 10px;border-radius:10px;
+  background:var(--card);border:1px solid var(--border);
+  font-size:0.77rem;transition:all 0.15s;
+}
+.file-item:hover{border-color:var(--border2);background:var(--card2)}
+.fi-dot{width:7px;height:7px;min-width:7px;border-radius:50%;background:var(--blue)}
+.fi-name{flex:1;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fi-date{color:var(--muted);font-size:0.7rem;white-space:nowrap}
+.fi-del{
+  width:22px;height:22px;border-radius:6px;border:none;
+  background:transparent;color:var(--muted);
+  cursor:pointer;font-size:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all 0.15s;opacity:0;
+}
+.file-item:hover .fi-del{opacity:1}
+.fi-del:hover{background:var(--danger-lo);color:var(--danger)}
+.empty-list{
+  text-align:center;color:var(--muted);font-size:0.77rem;
+  padding:16px 8px;border:1px dashed var(--border);border-radius:10px;
+}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+.main-body{flex:1;overflow-y:auto;padding:28px 32px}
+.main-body::-webkit-scrollbar{width:4px}
+.main-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+/* Page title */
+.page-head{margin-bottom:24px}
+.page-head h1{font-family:'Sora',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:3px}
+.page-head p{font-size:0.82rem;color:var(--muted)}
+
+/* Task cards */
+.task-label{font-size:0.67rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.tasks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.task-card{
+  padding:18px 14px 16px;border-radius:16px;
+  border:1.5px solid var(--border);background:var(--card);
+  cursor:pointer;text-align:center;
+  transition:all 0.18s;position:relative;overflow:hidden;
+}
+.task-card::after{
+  content:'';position:absolute;inset:0;
+  background:var(--tc,var(--blue));opacity:0;
+  transition:opacity 0.18s;pointer-events:none;
+}
+.task-card:hover{border-color:var(--tc,var(--blue));transform:translateY(-2px)}
+.task-card:hover::after{opacity:0.05}
+.task-card.active{
+  border-color:var(--tc,var(--blue));background:var(--card2);
+  box-shadow:0 0 0 1px var(--tc,var(--blue)),0 6px 20px rgba(0,0,0,0.3);
+}
+.task-card.active::after{opacity:0.08}
+.task-emoji{font-size:1.5rem;display:block;margin-bottom:7px}
+.task-name{font-size:0.83rem;font-weight:600;color:var(--text);display:block}
+.task-desc{font-size:0.7rem;color:var(--sub);margin-top:3px;line-height:1.4;display:block}
+
+/* Instruction row */
+.instr-row{display:flex;gap:10px;margin-bottom:24px;align-items:center}
+.instr-wrap{
+  flex:1;display:flex;align-items:center;
+  background:var(--card);border:1.5px solid var(--border2);
+  border-radius:12px;padding:0 14px;
+  transition:border-color 0.18s;
+}
+.instr-wrap:focus-within{border-color:var(--blue)}
+.instr-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--text);font-family:'Inter',sans-serif;
+  font-size:0.86rem;padding:13px 0;
+}
+.instr-input::placeholder{color:var(--muted)}
+.run-btn{
+  padding:13px 26px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  color:#fff;font-family:'Inter',sans-serif;
+  font-size:0.875rem;font-weight:600;cursor:pointer;
+  box-shadow:0 4px 16px rgba(99,102,241,0.32);
+  transition:all 0.18s;display:flex;align-items:center;gap:7px;white-space:nowrap;
+}
+.run-btn:hover{opacity:0.88;transform:translateY(-1px);box-shadow:0 6px 22px rgba(99,102,241,0.44)}
+.run-btn:active{transform:scale(0.97)}
+.run-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Results */
+.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.results-label{font-size:0.67rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.copy-btn{
+  display:none;align-items:center;gap:5px;
+  padding:6px 12px;border-radius:8px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--sub);font-family:'Inter',sans-serif;
+  font-size:0.73rem;cursor:pointer;transition:all 0.15s;
+}
+.copy-btn.show{display:flex}
+.copy-btn:hover{border-color:var(--blue);color:var(--text)}
+
+.results-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;min-height:260px;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+
+/* States */
+.state{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;gap:10px}
+.state.show{display:flex}
+.state-icon{font-size:2.2rem;margin-bottom:4px}
+.state h3{font-size:0.95rem;font-weight:600;color:var(--sub)}
+.state p{font-size:0.78rem;color:var(--muted);max-width:280px;line-height:1.6}
+
+/* Spinner */
+.spinner{
+  width:38px;height:38px;
+  border:3px solid var(--border2);border-top-color:var(--blue);
+  border-radius:50%;animation:spin 0.75s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-text{font-size:0.82rem;color:var(--sub)}
+.dots span{animation:df 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes df{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+/* Answer */
+.answer-body{
+  flex:1;padding:22px 26px;
+  font-size:0.875rem;line-height:1.85;color:var(--text);
+  white-space:pre-wrap;word-break:break-word;
+  overflow-y:auto;display:none;
+}
+.answer-body.show{display:block}
+.answer-body::-webkit-scrollbar{width:3px}
+.answer-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+.answer-foot{
+  border-top:1px solid var(--border);
+  padding:10px 18px;
+  display:none;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.answer-foot.show{display:flex}
+.ans-badge{display:flex;align-items:center;gap:6px;font-size:0.71rem;color:var(--sub)}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.ans-time{font-size:0.7rem;color:var(--muted)}
+
+/* Error */
+.err-body{font-size:0.82rem;color:#f87171;max-width:320px;line-height:1.6}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:22px;right:22px;
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:12px;padding:11px 15px;
+  font-size:0.79rem;color:var(--text);
+  box-shadow:0 10px 36px rgba(0,0,0,0.5);
+  transform:translateY(10px) scale(0.97);opacity:0;
+  transition:all 0.24s cubic-bezier(.34,1.56,.64,1);
+  z-index:9999;display:flex;align-items:center;gap:8px;pointer-events:none;
+}
+#toast.show{transform:translateY(0) scale(1);opacity:1}
+
+/* Confirm modal */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);
+  backdrop-filter:blur(4px);display:none;
+  align-items:center;justify-content:center;z-index:500;
+}
+.modal-bg.open{display:flex}
+.modal{
+  background:var(--surf);border:1px solid var(--border2);
+  border-radius:18px;padding:28px;width:100%;max-width:380px;
+  animation:popIn 0.22s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.modal p{font-size:0.82rem;color:var(--sub);margin-bottom:22px;line-height:1.6}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.modal-cancel{
+  padding:9px 18px;border-radius:9px;border:1px solid var(--border2);
+  background:transparent;color:var(--sub);font-family:'Inter',sans-serif;
+  font-size:0.82rem;cursor:pointer;transition:all 0.15s;
+}
+.modal-cancel:hover{background:var(--card);color:var(--text)}
+.modal-confirm{
+  padding:9px 18px;border-radius:9px;border:none;
+  background:var(--danger);color:#fff;font-family:'Inter',sans-serif;
+  font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.15s;
+}
+.modal-confirm:hover{background:#dc2626}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+  .tasks{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .main-body{padding:16px}
+  .tasks{grid-template-columns:1fr 1fr}
+  .instr-row{flex-direction:column}
+  .run-btn{width:100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- Delete confirm modal -->
+<div class="modal-bg" id="confirmModal">
+  <div class="modal">
+    <h3>Delete document?</h3>
+    <p id="confirmMsg">This will permanently remove the document from your account.</p>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-confirm" id="confirmOkBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🧠</div>
+    <span class="brand-name">StudyAI</span>
+  </div>
+  <div class="topbar-right">
+    <div class="user-chip">
+      <div class="user-avatar" id="userAvatar">?</div>
+      <span id="userName">Loading...</span>
+    </div>
+    <button class="logout-btn" onclick="logout()">Sign out</button>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Upload -->
+    <div>
+      <div class="sec-label">Upload Notes</div>
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept=".pdf,.txt,.docx" onchange="onFileSelect(this.files[0])"/>
+        <span class="drop-icon">📄</span>
+        <div class="drop-hint"><strong>Click or drag</strong> a file here<br/>PDF · TXT · DOCX</div>
+      </div>
+      <div class="file-tag" id="fileTag">
+        <span>📎</span>
+        <span class="file-tag-name" id="fileTagName"></span>
+        <button class="file-tag-del" onclick="clearFile()" title="Remove file">✕</button>
+      </div>
+      <button class="upload-btn" id="uploadBtn" onclick="uploadFile()" disabled>
+        <span>⬆</span> Upload File
+      </button>
+    </div>
+
+    <!-- Files list -->
+    <div style="flex:1">
+      <div class="sec-label">Your Documents</div>
+      <div class="files-list" id="filesList">
+        <div class="empty-list">No documents yet</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="main-body">
+
+      <div class="page-head">
+        <h1>What do you want to learn?</h1>
+        <p>Upload a document, pick a task, and let the AI do the heavy lifting.</p>
+      </div>
+
+      <!-- Tasks -->
+      <div class="task-label">Pick a task</div>
+      <div class="tasks">
+        <div class="task-card active" style="--tc:#3b82f6" data-task="summarize" onclick="selectTask(this)">
+          <span class="task-emoji">📝</span>
+          <span class="task-name">Summarize</span>
+          <span class="task-desc">Concise overview of key points</span>
+        </div>
+        <div class="task-card" style="--tc:#8b5cf6" data-task="explain" onclick="selectTask(this)">
+          <span class="task-emoji">💡</span>
+          <span class="task-name">Explain</span>
+          <span class="task-desc">Break complex ideas into simple terms</span>
+        </div>
+        <div class="task-card" style="--tc:#06b6d4" data-task="quiz" onclick="selectTask(this)">
+          <span class="task-emoji">🎯</span>
+          <span class="task-name">Quiz Me</span>
+          <span class="task-desc">5 questions to test your understanding</span>
+        </div>
+        <div class="task-card" style="--tc:#10b981" data-task="flashcards" onclick="selectTask(this)">
+          <span class="task-emoji">🃏</span>
+          <span class="task-name">Flashcards</span>
+          <span class="task-desc">Key terms and definitions to study</span>
+        </div>
+      </div>
+
+      <!-- Instruction -->
+      <div class="instr-row">
+        <div class="instr-wrap">
+          <input class="instr-input" id="instrInput" type="text"
+            placeholder="Optional: add extra instructions e.g. 'focus on chapter 2'..."
+            onkeydown="if(event.key==='Enter')runAI()"/>
+        </div>
+        <button class="run-btn" id="runBtn" onclick="runAI()">
+          <span>✦</span> Run AI
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div class="results-bar">
+        <div class="results-label">AI Results</div>
+        <button class="copy-btn" id="copyBtn" onclick="copyAnswer()">⎘ Copy</button>
+      </div>
+
+      <div class="results-box" id="resultsBox">
+        <!-- Empty -->
+        <div class="state show" id="stateEmpty">
+          <div class="state-icon">✦</div>
+          <h3>Nothing here yet</h3>
+          <p>Upload a document on the left, choose a task above, then click Run AI.</p>
+        </div>
+        <!-- Loading -->
+        <div class="state" id="stateLoad">
+          <div class="spinner"></div>
+          <div class="spin-text">AI is thinking<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
+        </div>
+        <!-- Error -->
+        <div class="state" id="stateErr">
+          <div class="state-icon">⚠️</div>
+          <div class="err-body" id="errBody"></div>
+        </div>
+        <!-- Answer -->
+        <div class="answer-body" id="answerBody"></div>
+        <div class="answer-foot" id="answerFoot">
+          <div class="ans-badge"><div class="badge-dot"></div><span id="badgeTask">Summarize</span></div>
+          <div class="ans-time" id="ansTime"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const API   = 'http://localhost:5000/api';
+const token = localStorage.getItem('token');
+
+// ── GUARD ──
+if (!token) window.location.href = 'login.html';
+
+// ── USER ──
+const user = (() => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } })();
+if (user) {
+  document.getElementById('userName').textContent   = user.first_name || user.email || 'User';
+  document.getElementById('userAvatar').textContent = (user.first_name || 'U')[0].toUpperCase();
+}
+
+// ── LOGOUT ──
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = 'login.html';
+}
+
+// ── STATE ──
+let selectedFile = null;
+let activeTask   = 'summarize';
+let lastAnswer   = '';
+let pendingDeleteId = null;
+
+// ── DRAG & DROP ──
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('over');
+  const f = e.dataTransfer.files[0];
+  if (f) onFileSelect(f);
+});
+
+function onFileSelect(file) {
+  if (!file) return;
+  selectedFile = file;
+  document.getElementById('fileTagName').textContent = file.name;
+  document.getElementById('fileTag').classList.add('show');
+  document.getElementById('uploadBtn').disabled = false;
+}
+
+function clearFile() {
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('fileTag').classList.remove('show');
+  document.getElementById('uploadBtn').disabled = true;
+}
+
+// ── UPLOAD ──
+async function uploadFile() {
+  if (!selectedFile) return;
+  const btn = document.getElementById('uploadBtn');
+  btn.disabled = true; btn.innerHTML = '<span>⏳</span> Uploading...';
+  try {
+    const form = new FormData();
+    form.append('file', selectedFile);
+    const res  = await fetch(`${API}/upload/pdf`, {
+      method:'POST', headers:{'Authorization':`Bearer ${token}`}, body:form
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Upload failed');
+    showToast('📄 Document uploaded!');
+    clearFile();
+    loadFiles();
+  } catch(e) {
+    showToast('❌ ' + e.message);
+  } finally {
+    btn.disabled = false; btn.innerHTML = '<span>⬆</span> Upload File';
+  }
+}
+
+// ── LOAD FILES ──
+async function loadFiles() {
+  const list = document.getElementById('filesList');
+  try {
+    const res  = await fetch(`${API}/upload/notes`, { headers:{'Authorization':`Bearer ${token}`} });
+    const data = await res.json();
+    const files = data.notes || [];
+    if (!files.length) {
+      list.innerHTML = '<div class="empty-list">No documents yet</div>'; return;
+    }
+    list.innerHTML = files.map(f => `
+      <div class="file-item" id="fi-${f.id}">
+        <div class="fi-dot"></div>
+        <div class="fi-name" title="${escHtml(f.filename || '')}">${escHtml(f.filename || 'Document')}</div>
+        <div class="fi-date">${f.created_at ? fmtDate(f.created_at) : ''}</div>
+        <button class="fi-del" onclick="askDelete(${f.id},'${escHtml(f.filename||'this document')}')" title="Delete">🗑</button>
+      </div>`).join('');
+  } catch {
+    list.innerHTML = '<div class="empty-list">Could not load documents</div>';
+  }
+}
+
+// ── DELETE ──
+function askDelete(id, name) {
+  pendingDeleteId = id;
+  document.getElementById('confirmMsg').textContent = `"${name}" will be permanently removed.`;
+  document.getElementById('confirmModal').classList.add('open');
+  document.getElementById('confirmOkBtn').onclick = confirmDelete;
+}
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('open');
+  pendingDeleteId = null;
+}
+async function confirmDelete() {
+  if (!pendingDeleteId) return;
+  const id = pendingDeleteId;
+  closeModal();
+  try {
+    const res = await fetch(`${API}/upload/notes/${id}`, {
+      method:'DELETE', headers:{'Authorization':`Bearer ${token}`}
+    });
+    if (!res.ok) { const d = await res.json(); throw new Error(d.message); }
+    document.getElementById('fi-' + id)?.remove();
+    if (!document.querySelector('.file-item')) {
+      document.getElementById('filesList').innerHTML = '<div class="empty-list">No documents yet</div>';
+    }
+    showToast('🗑 Document deleted');
+  } catch(e) {
+    showToast('❌ ' + e.message);
+  }
+}
+
+// ── TASK ──
+function selectTask(el) {
+  document.querySelectorAll('.task-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  activeTask = el.dataset.task;
+}
+
+// ── RUN AI ──
+async function runAI() {
+  const extra = document.getElementById('instrInput').value.trim();
+  const prompts = {
+    summarize:  `Summarize the notes clearly. Highlight the main ideas and key points.${extra ? ' ' + extra : ''}`,
+    explain:    `Explain the notes in simple language as if teaching a student.${extra ? ' ' + extra : ''}`,
+    quiz:       `Generate 5 quiz questions with answers from the notes.\nFormat each as:\nQ: [question]\nA: [answer]${extra ? ' ' + extra : ''}`,
+    flashcards: `Create 6 flashcards from the notes.\nFormat each as:\nFront: [term]\nBack: [definition]${extra ? ' ' + extra : ''}`
+  };
+
+  setState('load');
+  document.getElementById('runBtn').disabled = true;
+  const t0 = Date.now();
+
+  try {
+    const res  = await fetch(`${API}/ai/chat`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+      body: JSON.stringify({ message: prompts[activeTask] })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'AI request failed');
+    const answer = data.answer || '';
+    if (!answer) throw new Error('No response received. Make sure you have uploaded a document first.');
+    showAnswer(answer, Date.now() - t0);
+  } catch(e) {
+    setState('err', e.message);
+  } finally {
+    document.getElementById('runBtn').disabled = false;
+  }
+}
+
+// ── UI STATES ──
+function setState(s, msg = '') {
+  ['stateEmpty','stateLoad','stateErr'].forEach(id => {
+    document.getElementById(id).classList.remove('show');
+  });
+  document.getElementById('answerBody').classList.remove('show');
+  document.getElementById('answerFoot').classList.remove('show');
+  document.getElementById('copyBtn').classList.remove('show');
+
+  if (s === 'empty') document.getElementById('stateEmpty').classList.add('show');
+  if (s === 'load')  document.getElementById('stateLoad').classList.add('show');
+  if (s === 'err')   { document.getElementById('errBody').textContent = msg; document.getElementById('stateErr').classList.add('show'); }
+}
+
+function showAnswer(text, ms) {
+  lastAnswer = text;
+  setState('');
+  const ab = document.getElementById('answerBody');
+  ab.textContent = text; ab.classList.add('show');
+  const af = document.getElementById('answerFoot');
+  af.classList.add('show');
+  const names = {summarize:'Summarize',explain:'Explain',quiz:'Quiz Me',flashcards:'Flashcards'};
+  document.getElementById('badgeTask').textContent = names[activeTask] || activeTask;
+  document.getElementById('ansTime').textContent   = `Generated in ${(ms/1000).toFixed(1)}s`;
+  document.getElementById('copyBtn').classList.add('show');
+}
+
+// ── COPY ──
+async function copyAnswer() {
+  if (!lastAnswer) return;
+  try { await navigator.clipboard.writeText(lastAnswer); showToast('✅ Copied!'); }
+  catch { showToast('❌ Copy failed'); }
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── UTILS ──
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtDate(d) { return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+
+// ── INIT ──
+loadFiles();
+</script>
+</body>
+</html>

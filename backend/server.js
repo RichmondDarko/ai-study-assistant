@@ -1,0 +1,70 @@
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+
+const authRoutes = require("./routes/authRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
+const aiRoutes = require("./routes/aiRoutes");
+const courseRoutes = require("./routes/courseRoutes");
+
+const app = express();
+
+/*
+========================
+MIDDLEWARE (IMPORTANT)
+========================
+*/
+app.use(cors({
+  origin: [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+// THIS IS WHAT YOU WERE MISSING OR NOT RELIABLE
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+/*
+========================
+ROUTES
+========================
+*/
+app.use("/api/auth", authRoutes);
+app.use("/api/upload", uploadRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/courses", courseRoutes);
+
+/*
+========================
+TEST ROUTE
+========================
+*/
+app.get("/test", (req, res) => {
+  res.send("Server is working");
+});
+
+/*
+========================
+404 HANDLER (SAFE)
+========================
+*/
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found"
+  });
+});
+
+/*
+========================
+START SERVER
+========================
+*/
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

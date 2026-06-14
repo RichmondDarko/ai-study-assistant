@@ -1,0 +1,243 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, Arial, sans-serif;
+}
+
+body{
+background:#0f172a;
+color:#ffffff;
+min-height:100vh;
+}
+
+/* AUTH PAGES */
+
+.auth-container{
+width:420px;
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+margin:80px auto;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.auth-container h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.auth-container input{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:none;
+border-radius:10px;
+}
+
+.auth-container button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+}
+
+.auth-container p{
+margin-top:15px;
+text-align:center;
+}
+
+.show-password{
+display:flex;
+align-items:center;
+gap:8px;
+margin-bottom:15px;
+}
+
+.show-password input{
+width:auto;
+margin:0;
+}
+
+/* DASHBOARD */
+
+.dashboard{
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:300px;
+background:#111827;
+padding:25px;
+border-right:1px solid #1f2937;
+}
+
+.logo h2{
+color:#60a5fa;
+margin-bottom:5px;
+}
+
+.logo p{
+color:#94a3b8;
+font-size:14px;
+}
+
+.upload-section{
+margin-top:30px;
+}
+
+.upload-section h3{
+margin-bottom:15px;
+}
+
+.upload-section input{
+width:100%;
+margin-bottom:15px;
+}
+
+.upload-section button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+}
+
+.files-section{
+margin-top:30px;
+}
+
+.files-section h3{
+margin-bottom:15px;
+}
+
+.file-card{
+background:#1f2937;
+padding:12px;
+border-radius:10px;
+margin-bottom:10px;
+color:#cbd5e1;
+}
+
+/* MAIN */
+
+.main-content{
+flex:1;
+padding:30px;
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.welcome-card{
+background:#111827;
+padding:25px;
+border-radius:16px;
+}
+
+.welcome-card h1{
+margin-bottom:10px;
+}
+
+.welcome-card p{
+color:#94a3b8;
+}
+
+/* ACTIONS */
+
+.action-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+}
+
+.action-card{
+background:#1e293b;
+border:none;
+border-radius:14px;
+color:white;
+padding:25px;
+cursor:pointer;
+font-size:18px;
+display:flex;
+flex-direction:column;
+gap:10px;
+transition:0.3s;
+}
+
+.action-card:hover{
+transform:translateY(-4px);
+background:#2563eb;
+}
+
+.action-card span{
+font-size:16px;
+}
+
+/* TASK */
+
+.task-indicator{
+background:#111827;
+padding:15px;
+border-radius:12px;
+}
+
+#selectedTask{
+color:#60a5fa;
+font-weight:bold;
+}
+
+/* PROMPT */
+
+.prompt-area{
+display:flex;
+gap:10px;
+}
+
+.prompt-area input{
+flex:1;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#1e293b;
+color:white;
+}
+
+.prompt-area button{
+width:160px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+}
+
+/* RESULTS */
+
+.results-card{
+flex:1;
+background:#111827;
+border-radius:16px;
+overflow:hidden;
+}
+
+.results-header{
+padding:18px;
+border-bottom:1px solid #1f2937;
+font-weight:bold;
+}
+
+.results-content{
+padding:20px;
+white-space:pre-wrap;
+line-height:1.8;
+color:#cbd5e1;
+}
