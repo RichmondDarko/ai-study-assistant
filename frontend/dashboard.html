@@ -19,7 +19,7 @@
 html,body{height:100%;overflow:hidden}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex;flex-direction:column}
 
-/* ── TOPBAR ── */
+/* TOPBAR */
 .topbar{
   height:58px;min-height:58px;
   display:flex;align-items:center;justify-content:space-between;
@@ -37,7 +37,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
 .brand-name{font-family:'Sora',sans-serif;font-size:1rem;font-weight:800}
 .topbar-right{display:flex;align-items:center;gap:12px}
 .user-chip{
-  display:flex;align-items:center;gap-8px;
+  display:flex;align-items:center;
   font-size:0.8rem;color:var(--sub);
   background:var(--card);border:1px solid var(--border);
   padding:6px 12px;border-radius:999px;gap:7px;
@@ -58,10 +58,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
 }
 .logout-btn:hover{border-color:rgba(239,68,68,0.4);color:var(--danger);background:var(--danger-lo)}
 
-/* ── LAYOUT ── */
+/* LAYOUT */
 .shell{display:flex;flex:1;overflow:hidden}
 
-/* ── SIDEBAR ── */
+/* SIDEBAR */
 .sidebar{
   width:272px;min-width:272px;
   background:var(--surf);border-right:1px solid var(--border);
@@ -87,7 +87,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
 .drop-hint{font-size:0.76rem;color:var(--sub);line-height:1.5}
 .drop-hint strong{color:var(--blue)}
 
-/* Selected file tag */
+/* File tag */
 .file-tag{
   margin-top:10px;padding:9px 11px;
   background:var(--card2);border:1px solid var(--border);border-radius:10px;
@@ -141,12 +141,18 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
   padding:16px 8px;border:1px dashed var(--border);border-radius:10px;
 }
 
-/* ── MAIN ── */
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-
 .main-body{flex:1;overflow-y:auto;padding:28px 32px}
 .main-body::-webkit-scrollbar{width:4px}
 .main-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+/* Mobile upload panel */
+.mobile-upload{
+  display:none;
+  background:var(--surf);border:1px solid var(--border);
+  border-radius:16px;padding:16px;margin-bottom:24px;
+}
 
 /* Page title */
 .page-head{margin-bottom:24px}
@@ -232,11 +238,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
 .state p{font-size:0.78rem;color:var(--muted);max-width:280px;line-height:1.6}
 
 /* Spinner */
-.spinner{
-  width:38px;height:38px;
-  border:3px solid var(--border2);border-top-color:var(--blue);
-  border-radius:50%;animation:spin 0.75s linear infinite;
-}
+.spinner{width:38px;height:38px;border:3px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.75s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin-text{font-size:0.82rem;color:var(--sub)}
 .dots span{animation:df 1.2s infinite}
@@ -254,19 +256,11 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
 .answer-body.show{display:block}
 .answer-body::-webkit-scrollbar{width:3px}
 .answer-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-
-.answer-foot{
-  border-top:1px solid var(--border);
-  padding:10px 18px;
-  display:none;align-items:center;justify-content:space-between;
-  flex-shrink:0;
-}
+.answer-foot{border-top:1px solid var(--border);padding:10px 18px;display:none;align-items:center;justify-content:space-between;flex-shrink:0;}
 .answer-foot.show{display:flex}
 .ans-badge{display:flex;align-items:center;gap:6px;font-size:0.71rem;color:var(--sub)}
 .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue)}
 .ans-time{font-size:0.7rem;color:var(--muted)}
-
-/* Error */
 .err-body{font-size:0.82rem;color:#f87171;max-width:320px;line-height:1.6}
 
 /* Toast */
@@ -282,44 +276,42 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
 }
 #toast.show{transform:translateY(0) scale(1);opacity:1}
 
-/* Confirm modal */
-.modal-bg{
-  position:fixed;inset:0;background:rgba(0,0,0,0.65);
-  backdrop-filter:blur(4px);display:none;
-  align-items:center;justify-content:center;z-index:500;
-}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:500;}
 .modal-bg.open{display:flex}
-.modal{
-  background:var(--surf);border:1px solid var(--border2);
-  border-radius:18px;padding:28px;width:100%;max-width:380px;
-  animation:popIn 0.22s cubic-bezier(.34,1.56,.64,1);
-}
+.modal{background:var(--surf);border:1px solid var(--border2);border-radius:18px;padding:28px;width:100%;max-width:380px;animation:popIn 0.22s cubic-bezier(.34,1.56,.64,1);}
 @keyframes popIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
 .modal h3{font-size:1rem;font-weight:700;margin-bottom:8px}
 .modal p{font-size:0.82rem;color:var(--sub);margin-bottom:22px;line-height:1.6}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end}
-.modal-cancel{
-  padding:9px 18px;border-radius:9px;border:1px solid var(--border2);
-  background:transparent;color:var(--sub);font-family:'Inter',sans-serif;
-  font-size:0.82rem;cursor:pointer;transition:all 0.15s;
-}
+.modal-cancel{padding:9px 18px;border-radius:9px;border:1px solid var(--border2);background:transparent;color:var(--sub);font-family:'Inter',sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.15s;}
 .modal-cancel:hover{background:var(--card);color:var(--text)}
-.modal-confirm{
-  padding:9px 18px;border-radius:9px;border:none;
-  background:var(--danger);color:#fff;font-family:'Inter',sans-serif;
-  font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.15s;
-}
+.modal-confirm{padding:9px 18px;border-radius:9px;border:none;background:var(--danger);color:#fff;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
 .modal-confirm:hover{background:#dc2626}
+
+/* Mobile docs toggle button */
+.mobile-docs-toggle{
+  display:none;
+  width:100%;padding:11px;border-radius:11px;border:1px solid var(--border2);
+  background:var(--card);color:var(--sub);font-family:'Inter',sans-serif;
+  font-size:0.83rem;font-weight:600;cursor:pointer;
+  margin-bottom:16px;align-items:center;justify-content:center;gap:7px;
+  transition:all 0.15s;
+}
+.mobile-docs-toggle:hover{border-color:var(--blue);color:var(--text)}
 
 @media(max-width:900px){
   .sidebar{display:none}
   .tasks{grid-template-columns:repeat(2,1fr)}
+  .mobile-upload{display:block}
+  .mobile-docs-toggle{display:flex}
 }
 @media(max-width:560px){
   .main-body{padding:16px}
   .tasks{grid-template-columns:1fr 1fr}
   .instr-row{flex-direction:column}
   .run-btn{width:100%;justify-content:center}
+  .mobile-upload{padding:12px}
 }
 </style>
 </head>
@@ -355,10 +347,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
 
 <div class="shell">
 
-  <!-- SIDEBAR -->
+  <!-- SIDEBAR (desktop) -->
   <aside class="sidebar">
-
-    <!-- Upload -->
     <div>
       <div class="sec-label">Upload Notes</div>
       <div class="drop-zone" id="dropZone">
@@ -375,20 +365,39 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
         <span>⬆</span> Upload File
       </button>
     </div>
-
-    <!-- Files list -->
     <div style="flex:1">
       <div class="sec-label">Your Documents</div>
       <div class="files-list" id="filesList">
         <div class="empty-list">No documents yet</div>
       </div>
     </div>
-
   </aside>
 
   <!-- MAIN -->
   <div class="main">
     <div class="main-body">
+
+      <!-- MOBILE UPLOAD PANEL -->
+      <div class="mobile-upload">
+        <div class="sec-label">Upload Notes</div>
+        <div class="drop-zone" id="dropZoneMobile">
+          <input type="file" id="fileInputMobile" accept=".pdf,.txt,.docx" onchange="onFileSelect(this.files[0])"/>
+          <span class="drop-icon">📄</span>
+          <div class="drop-hint"><strong>Tap</strong> to select a file<br/>PDF · TXT · DOCX</div>
+        </div>
+        <div class="file-tag" id="fileTagMobile">
+          <span>📎</span>
+          <span class="file-tag-name" id="fileTagNameMobile"></span>
+          <button class="file-tag-del" onclick="clearFile()">✕</button>
+        </div>
+        <button class="upload-btn" id="uploadBtnMobile" onclick="uploadFile()" disabled>
+          <span>⬆</span> Upload File
+        </button>
+        <div class="sec-label" style="margin-top:16px">Your Documents</div>
+        <div class="files-list" id="filesListMobile">
+          <div class="empty-list">No documents yet</div>
+        </div>
+      </div>
 
       <div class="page-head">
         <h1>What do you want to learn?</h1>
@@ -439,23 +448,19 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
       </div>
 
       <div class="results-box" id="resultsBox">
-        <!-- Empty -->
         <div class="state show" id="stateEmpty">
           <div class="state-icon">✦</div>
           <h3>Nothing here yet</h3>
-          <p>Upload a document on the left, choose a task above, then click Run AI.</p>
+          <p>Upload a document, choose a task above, then click Run AI.</p>
         </div>
-        <!-- Loading -->
         <div class="state" id="stateLoad">
           <div class="spinner"></div>
           <div class="spin-text">AI is thinking<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
         </div>
-        <!-- Error -->
         <div class="state" id="stateErr">
           <div class="state-icon">⚠️</div>
           <div class="err-body" id="errBody"></div>
         </div>
-        <!-- Answer -->
         <div class="answer-body" id="answerBody"></div>
         <div class="answer-foot" id="answerFoot">
           <div class="ans-badge"><div class="badge-dot"></div><span id="badgeTask">Summarize</span></div>
@@ -471,30 +476,26 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;displ
 const API = 'https://ai-study-backend-nchc.onrender.com/api';
 const token = localStorage.getItem('token');
 
-// ── GUARD ──
 if (!token) window.location.href = 'login.html';
 
-// ── USER ──
 const user = (() => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } })();
 if (user) {
   document.getElementById('userName').textContent   = user.first_name || user.email || 'User';
   document.getElementById('userAvatar').textContent = (user.first_name || 'U')[0].toUpperCase();
 }
 
-// ── LOGOUT ──
 function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   window.location.href = 'login.html';
 }
 
-// ── STATE ──
-let selectedFile = null;
-let activeTask   = 'summarize';
-let lastAnswer   = '';
+let selectedFile    = null;
+let activeTask      = 'summarize';
+let lastAnswer      = '';
 let pendingDeleteId = null;
 
-// ── DRAG & DROP ──
+// Drag & drop (desktop)
 const dropZone = document.getElementById('dropZone');
 dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('over'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
@@ -507,23 +508,37 @@ dropZone.addEventListener('drop', e => {
 function onFileSelect(file) {
   if (!file) return;
   selectedFile = file;
+
+  // Desktop
   document.getElementById('fileTagName').textContent = file.name;
   document.getElementById('fileTag').classList.add('show');
   document.getElementById('uploadBtn').disabled = false;
+
+  // Mobile
+  document.getElementById('fileTagNameMobile').textContent = file.name;
+  document.getElementById('fileTagMobile').classList.add('show');
+  document.getElementById('uploadBtnMobile').disabled = false;
 }
 
 function clearFile() {
   selectedFile = null;
-  document.getElementById('fileInput').value = '';
+  document.getElementById('fileInput').value       = '';
+  document.getElementById('fileInputMobile').value = '';
   document.getElementById('fileTag').classList.remove('show');
-  document.getElementById('uploadBtn').disabled = true;
+  document.getElementById('fileTagMobile').classList.remove('show');
+  document.getElementById('uploadBtn').disabled       = true;
+  document.getElementById('uploadBtnMobile').disabled = true;
 }
 
-// ── UPLOAD ──
 async function uploadFile() {
   if (!selectedFile) return;
-  const btn = document.getElementById('uploadBtn');
-  btn.disabled = true; btn.innerHTML = '<span>⏳</span> Uploading...';
+
+  // Disable both buttons
+  const btn  = document.getElementById('uploadBtn');
+  const btnM = document.getElementById('uploadBtnMobile');
+  btn.disabled = btnM.disabled = true;
+  btn.innerHTML = btnM.innerHTML = '<span>⏳</span> Uploading...';
+
   try {
     const form = new FormData();
     form.append('file', selectedFile);
@@ -538,33 +553,37 @@ async function uploadFile() {
   } catch(e) {
     showToast('❌ ' + e.message);
   } finally {
-    btn.disabled = false; btn.innerHTML = '<span>⬆</span> Upload File';
+    btn.disabled = btnM.disabled = false;
+    btn.innerHTML = btnM.innerHTML = '<span>⬆</span> Upload File';
   }
 }
 
-// ── LOAD FILES ──
 async function loadFiles() {
-  const list = document.getElementById('filesList');
+  const list  = document.getElementById('filesList');
+  const listM = document.getElementById('filesListMobile');
   try {
     const res  = await fetch(`${API}/upload/notes`, { headers:{'Authorization':`Bearer ${token}`} });
     const data = await res.json();
     const files = data.notes || [];
     if (!files.length) {
-      list.innerHTML = '<div class="empty-list">No documents yet</div>'; return;
+      const empty = '<div class="empty-list">No documents yet</div>';
+      list.innerHTML = listM.innerHTML = empty;
+      return;
     }
-    list.innerHTML = files.map(f => `
+    const html = files.map(f => `
       <div class="file-item" id="fi-${f.id}">
         <div class="fi-dot"></div>
-        <div class="fi-name" title="${escHtml(f.filename || '')}">${escHtml(f.filename || 'Document')}</div>
+        <div class="fi-name" title="${escHtml(f.filename||'')}">${escHtml(f.filename||'Document')}</div>
         <div class="fi-date">${f.created_at ? fmtDate(f.created_at) : ''}</div>
         <button class="fi-del" onclick="askDelete(${f.id},'${escHtml(f.filename||'this document')}')" title="Delete">🗑</button>
       </div>`).join('');
+    list.innerHTML = listM.innerHTML = html;
   } catch {
-    list.innerHTML = '<div class="empty-list">Could not load documents</div>';
+    const err = '<div class="empty-list">Could not load documents</div>';
+    list.innerHTML = listM.innerHTML = err;
   }
 }
 
-// ── DELETE ──
 function askDelete(id, name) {
   pendingDeleteId = id;
   document.getElementById('confirmMsg').textContent = `"${name}" will be permanently removed.`;
@@ -584,9 +603,11 @@ async function confirmDelete() {
       method:'DELETE', headers:{'Authorization':`Bearer ${token}`}
     });
     if (!res.ok) { const d = await res.json(); throw new Error(d.message); }
-    document.getElementById('fi-' + id)?.remove();
+    document.querySelectorAll(`#fi-${id}`).forEach(el => el.remove());
     if (!document.querySelector('.file-item')) {
-      document.getElementById('filesList').innerHTML = '<div class="empty-list">No documents yet</div>';
+      const empty = '<div class="empty-list">No documents yet</div>';
+      document.getElementById('filesList').innerHTML = empty;
+      document.getElementById('filesListMobile').innerHTML = empty;
     }
     showToast('🗑 Document deleted');
   } catch(e) {
@@ -594,14 +615,12 @@ async function confirmDelete() {
   }
 }
 
-// ── TASK ──
 function selectTask(el) {
   document.querySelectorAll('.task-card').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   activeTask = el.dataset.task;
 }
 
-// ── RUN AI ──
 async function runAI() {
   const extra = document.getElementById('instrInput').value.trim();
   const prompts = {
@@ -633,15 +652,11 @@ async function runAI() {
   }
 }
 
-// ── UI STATES ──
 function setState(s, msg = '') {
-  ['stateEmpty','stateLoad','stateErr'].forEach(id => {
-    document.getElementById(id).classList.remove('show');
-  });
+  ['stateEmpty','stateLoad','stateErr'].forEach(id => document.getElementById(id).classList.remove('show'));
   document.getElementById('answerBody').classList.remove('show');
   document.getElementById('answerFoot').classList.remove('show');
   document.getElementById('copyBtn').classList.remove('show');
-
   if (s === 'empty') document.getElementById('stateEmpty').classList.add('show');
   if (s === 'load')  document.getElementById('stateLoad').classList.add('show');
   if (s === 'err')   { document.getElementById('errBody').textContent = msg; document.getElementById('stateErr').classList.add('show'); }
@@ -652,33 +667,28 @@ function showAnswer(text, ms) {
   setState('');
   const ab = document.getElementById('answerBody');
   ab.textContent = text; ab.classList.add('show');
-  const af = document.getElementById('answerFoot');
-  af.classList.add('show');
+  document.getElementById('answerFoot').classList.add('show');
   const names = {summarize:'Summarize',explain:'Explain',quiz:'Quiz Me',flashcards:'Flashcards'};
   document.getElementById('badgeTask').textContent = names[activeTask] || activeTask;
   document.getElementById('ansTime').textContent   = `Generated in ${(ms/1000).toFixed(1)}s`;
   document.getElementById('copyBtn').classList.add('show');
 }
 
-// ── COPY ──
 async function copyAnswer() {
   if (!lastAnswer) return;
   try { await navigator.clipboard.writeText(lastAnswer); showToast('✅ Copied!'); }
   catch { showToast('❌ Copy failed'); }
 }
 
-// ── TOAST ──
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ── UTILS ──
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function fmtDate(d) { return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
 
-// ── INIT ──
 loadFiles();
 </script>
 </body>
