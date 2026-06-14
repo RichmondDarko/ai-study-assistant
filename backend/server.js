@@ -7,6 +7,14 @@ const uploadRoutes = require("./routes/uploadRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 
+const cors = require('cors');
+
+app.use(cors({
+  origin: ['https://studyai-richmond.netlify.app', 'http://localhost:5500', 'http://127.0.0.1:5500'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 const app = express();
 
 /*
