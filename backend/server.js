@@ -22,14 +22,7 @@ const app = express();
 MIDDLEWARE (IMPORTANT)
 ========================
 */
-app.use(cors({
-  origin: [
-    "http://127.0.0.1:5500",
-    "http://localhost:5500"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+
 
 // THIS IS WHAT YOU WERE MISSING OR NOT RELIABLE
 app.use(express.json());
