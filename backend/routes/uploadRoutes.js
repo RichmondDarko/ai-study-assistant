@@ -3,12 +3,19 @@ const router = express.Router();
 const multer = require("multer");
 const pdfParse = require("pdf-parse");
 const fs = require("fs");
+const path = require("path");
 const pool = require("../config/db");
 const authMiddleware = require("../middleware/authMiddleware");
 
+// ✅ Create uploads folder if it doesn't exist
+const uploadDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, uploadDir); // ✅ use absolute path
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
@@ -63,17 +70,12 @@ router.get("/notes", authMiddleware, async (req, res) => {
       [req.user.id]
     );
     return res.json({ notes: result.rows });
-
   } catch (error) {
     console.error("GET NOTES ERROR:", error);
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 
-module.exports = router;
-
-
-// DELETE A NOTE
 router.delete("/notes/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
@@ -90,3 +92,6 @@ router.delete("/notes/:id", authMiddleware, async (req, res) => {
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
+// ✅ module.exports at the very end
+module.exports = router;
